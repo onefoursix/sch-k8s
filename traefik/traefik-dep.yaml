@@ -1,22 +1,22 @@
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
-  name: traefik-ingress-controller
+  name: traefik
   labels:
-    k8s-app: traefik-ingress-lb
+    app: traefik
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: traefik-ingress-lb
+      app: traefik
   template:
     metadata:
       labels:
-        k8s-app: traefik-ingress-lb
-        name: traefik-ingress-lb
+        app: traefik
+        name: traefik
     spec:
-      serviceAccountName: traefik-ingress-controller
+      serviceAccountName: traefik
       terminationGracePeriodSeconds: 60
       volumes:
       - name: ssl
@@ -27,7 +27,7 @@ spec:
           name: traefik-conf
       containers:
       - image: traefik:1.7
-        name: traefik-ingress-lb
+        name: traefik
         imagePullPolicy: Always
         volumeMounts:
         - mountPath: "/ssl"
@@ -43,11 +43,11 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: traefik-ingress-service
+  name: traefik
 spec:
   type: LoadBalancer
   selector:
-    k8s-app: traefik-ingress-lb
+    app: traefik
   ports:
     - protocol: TCP
       port: 80

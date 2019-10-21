@@ -1,20 +1,20 @@
 #!/bin/sh
 
 # Set your namespace
-export KUBE_NAMESPACE=streamsets
+export KUBE_NAMESPACE=ns1
 
 # Create a service account
-kubectl create serviceaccount traefik-ingress-controller --namespace=${KUBE_NAMESPACE}
+kubectl create serviceaccount traefik --namespace=${KUBE_NAMESPACE}
 
 # Create a role
-kubectl create role traefik-ingress-controller \
+kubectl create role traefik \
     --verb=get,list,watch \
     --resource=endpoints,ingresses.extensions,services,secrets
     
 # Bind the service account to the role
-kubectl create rolebinding traefik-ingress-controller \
-    --role=traefik-ingress-controller \
-    --serviceaccount=${KUBE_NAMESPACE}:traefik-ingress-controller
+kubectl create rolebinding traefik \
+    --role=traefik \
+    --serviceaccount=${KUBE_NAMESPACE}:traefik
 
 # Generate a self signed certificate 
 openssl req -newkey rsa:2048 \
