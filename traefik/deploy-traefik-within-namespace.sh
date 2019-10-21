@@ -3,18 +3,8 @@
 # Set your namespace
 export KUBE_NAMESPACE=ns1
 
-# Create a service account
-kubectl create serviceaccount traefik --namespace=${KUBE_NAMESPACE}
-
-# Create a role
-kubectl create role traefik \
-    --verb=get,list,watch \
-    --resource=endpoints,ingresses.extensions,services,secrets
-    
-# Bind the service account to the role
-kubectl create rolebinding traefik \
-    --role=traefik \
-    --serviceaccount=${KUBE_NAMESPACE}:traefik
+# Create traefik service account, role and role binding
+kubectl create -f traefik-rbac.yaml
 
 # Generate a self signed certificate 
 openssl req -newkey rsa:2048 \

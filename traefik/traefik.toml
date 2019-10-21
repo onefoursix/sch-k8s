@@ -9,4 +9,6 @@ defaultEntryPoints = ["http","https"]
       [[entryPoints.https.tls.certificates]]
       CertFile = "/ssl/tls.crt"
       KeyFile = "/ssl/tls.key"
+[kubernetes]
+namespaces = ["ns1"]
       
